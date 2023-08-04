@@ -149,7 +149,8 @@ if __name__ == '__main__':
     print_args(vars(opt))
 
     # Model
-    model = _create(name=opt.model, pretrained=True, channels=3, classes=80, autoshape=True, verbose=True)
+    # model = _create(name=opt.model, pretrained=True, channels=3, classes=80, autoshape=True, verbose=True)
+    model = torch.hub.load('ultralytics/yolov5', 'custom', 'yolov5s.pt')
     # model = custom(path='path/to/model.pt')  # custom
 
     # Images
@@ -165,5 +166,11 @@ if __name__ == '__main__':
     results = model(imgs, size=320)  # batched inference
 
     # Results
-    results.print()
-    results.save()
+
+    # results.print()
+    a=results.xyxy[0]
+    b=results.pandas().xyxy[0] 
+    c=results.pandas().xyxy[0].value_counts('name')
+    d=results.pandas().xyxy[0]['name']
+    e=d[0]
+    # results.save()

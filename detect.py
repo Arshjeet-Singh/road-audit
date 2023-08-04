@@ -33,8 +33,27 @@ import os
 import platform
 import sys
 from pathlib import Path
-
+import string
 import torch
+
+import logging
+ourfinaltry="a"
+ourfinaltry1="b"
+ourfinaltry2="c"
+koshish=[]
+dictkoshish={"trafficlight":"No","chevron_markers":"No","speedlimit":"No","pavement_markers":"No","crosswalk":"No","stop":"No"}
+try:
+    from cStringIO import StringIO      # Python 2
+except ImportError:
+    from io import StringIO
+
+log_stream = StringIO()    
+logging.basicConfig(stream=log_stream, level=logging.INFO)
+
+logging.warning('be careful!')
+logging.debug("you won't see this")
+logging.error('you will see this')
+logging.critical('critical is logged too!')
 
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]  # YOLOv5 root directory
@@ -49,7 +68,7 @@ from utils.general import (LOGGER, Profile, check_file, check_img_size, check_im
 from utils.plots import Annotator, colors, save_one_box
 from utils.torch_utils import select_device, smart_inference_mode
 
-
+bada_predict=2
 @smart_inference_mode()
 def run(
         weights=ROOT / 'yolov5s.pt',  # model path or triton URL
@@ -135,6 +154,8 @@ def run(
         # pred = utils.general.apply_classifier(pred, classifier_model, im, im0s)
 
         # Process predictions
+        # global_det
+        bada_predict=pred
         for i, det in enumerate(pred):  # per image
             seen += 1
             if webcam:  # batch_size >= 1
@@ -158,6 +179,13 @@ def run(
                 for c in det[:, 5].unique():
                     n = (det[:, 5] == c).sum()  # detections per class
                     s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
+                    LOGGER.info(f"{names[int(c)]}")
+                    koshish.append(names[int(c)])
+                    dictkoshish[names[int(c)]]="Yes"
+
+
+                ourfinaltry=s    
+                    # ourfinaltry2 +=f"{n} {names[int(c)]}{'s' * (n > 1)},"
 
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
@@ -204,7 +232,15 @@ def run(
                     vid_writer[i].write(im0)
 
         # Print time (inference-only)
+        # LOGGER.info(f"{s}{'' if len(det) else '(no detections), '}{dt[1].dt * 1E3:.1f}ms")
+        # LOGGER.info(det)
+        ourfinaltry2=s
         LOGGER.info(f"{s}{'' if len(det) else '(no detections), '}{dt[1].dt * 1E3:.1f}ms")
+        logging.info(f"{s}{'' if len(det) else '(no detections), '}{dt[1].dt * 1E3:.1f}ms")
+        ourfinaltry=LOGGER.info(f"{s}{'' if len(det) else '(no detections), '}{dt[1].dt * 1E3:.1f}ms")
+        ourfinaltry1=log_stream.getvalue()
+        # ourfinaltry2=f"{s}{'' if len(det) else '(no detections), '}{dt[1].dt * 1E3:.1f}ms"
+        print(log_stream.getvalue())
 
     # Print results
     t = tuple(x.t / seen * 1E3 for x in dt)  # speeds per image
@@ -215,7 +251,12 @@ def run(
     if update:
         strip_optimizer(weights[0])  # update model (to fix SourceChangeWarning)
 
-
+# a=pred.xyxy[0]
+# b=pred.pandas().xyxy[0] 
+# c=pred.pandas().xyxy[0].value_counts('name')
+#         d=pred.pandas().xyxy[0]['name']
+#         e=d[0]
+#         print(e)
 def parse_opt():
     parser = argparse.ArgumentParser()
     parser.add_argument('--weights', nargs='+', type=str, default=ROOT / 'yolov5s.pt', help='model path or triton URL')
