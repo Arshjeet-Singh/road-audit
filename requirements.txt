@@ -40,5 +40,5 @@ torch==2.0.1
 torchvision==0.15.2
 tqdm==4.65.0
 tritonclient==2.36.0
-ultralytics==8.0.115
+ultralytics==8.0.154
 x2paddle==1.4.1
