@@ -32,7 +32,7 @@ streamlit==1.23.1
 streamlit_option_menu==0.3.6
 tensorflow==2.13.0
 tensorflowjs==4.10.0
-tensorrt==8.6.1
+tensorrt==9.0.1.post12.dev4
 tflite_runtime==2.13.0
 tflite_support==0.4.4
 thop==0.1.1.post2209072238
