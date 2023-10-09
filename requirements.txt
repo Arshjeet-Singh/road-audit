@@ -28,7 +28,7 @@ scipy==1.11.1
 seaborn==0.12.2
 setuptools==65.5.0
 #setuptools==67.8.0
-streamlit==1.23.1
+streamlit==1.27.2
 streamlit_option_menu==0.3.6
 tensorflow==2.13.0
 tensorflowjs==4.10.0
